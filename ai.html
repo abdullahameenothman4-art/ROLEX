@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolex | Luxury Watches</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rolex: {
+              green: "#006039",
+              darkgreen: "#003f2d",
+              gold: "#c9a45c",
+              black: "#101512"
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #101512;
+      color: #f5f1e8;
+      font-family: "Montserrat", sans-serif;
+    }
+
+    h1, h2, h3, .brand {
+      font-family: "Cinzel", serif;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .gold {
+      color: #c9a45c;
+    }
+
+    .section {
+      padding: 75px 7%;
+    }
+
+    .primary-button {
+      display: inline-block;
+      padding: 13px 20px;
+      background: #006039;
+      color: white;
+      border: 1px solid #c9a45c;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    .primary-button:hover {
+      background: #00834e;
+    }
+
+    .primary-button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .secondary-button {
+      padding: 12px 18px;
+      border: 1px solid #c9a45c;
+      color: white;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .secondary-button:hover {
+      background: #24352a;
+    }
+
+    .nav-link:hover {
+      color: #c9a45c;
+    }
+
+    .hero {
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.9), rgba(0,0,0,.25)),
+        url("https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=1800&q=85")
+        center/cover;
+    }
+
+    .watch-card {
+      background: #171e19;
+      border: 1px solid #303a32;
+      transition: transform .25s, border-color .25s;
+    }
+
+    .watch-card:hover {
+      transform: translateY(-5px);
+      border-color: #c9a45c;
+    }
+
+    .watch-image {
+      height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, #28372b, #111713 75%);
+    }
+
+    .watch-image img {
+      max-width: 90%;
+      max-height: 210px;
+      object-fit: contain;
+    }
+
+    .form-field {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      background: #111713;
+      color: white;
+      border: 1px solid #465047;
+      outline: none;
+    }
+
+    .form-field:focus {
+      border-color: #c9a45c;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,.85);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 25px;
+      background: #171e19;
+      border: 1px solid #c9a45c;
+    }
+
+    @media (max-width: 700px) {
+      .section {
+        padding: 50px 5%;
+      }
+
+      .hero {
+        min-height: 500px;
+      }
+
+      .watch-image {
+        height: 190px;
+      }
+
+      .modal-content {
+        padding: 18px;
+      }
+
+      #navigation.mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 65px;
+        right: 12px;
+        padding: 20px;
+        background: #101512;
+        border: 1px solid #c9a45c;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="sticky top-0 z-50 bg-rolex-black border-b border-rolex-gold/40">
+    <nav class="max-w-7xl mx-auto px-5 py-4 flex justify-between items-center">
+      <a href="#home" class="brand text-2xl gold font-bold">ROLEX</a>
+
+      <button class="md:hidden text-xl" onclick="toggleMenu()" aria-label="Menu">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div id="navigation" class="hidden md:flex gap-6 items-center text-sm">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#collection" class="nav-link">Collectie</a>
+        <a href="#configurator" class="nav-link">Configureer</a>
+        <a href="#craftsmanship" class="nav-link">Vakmanschap</a>
+        <button class="primary-button" onclick="openCheckout()">
+          <i class="fa-solid fa-bag-shopping mr-2"></i>Bestellen
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="max-w-7xl mx-auto w-full px-6 md:px-12 py-20">
+      <p class="gold tracking-[.3em] text-sm mb-5">TIJDLOZE ELEGANTIE</p>
+
+      <h1 class="text-4xl md:text-7xl font-bold leading-tight max-w-3xl">
+        Ontdek de wereld van luxe horloges
+      </h1>
+
+      <p class="text-gray-300 max-w-xl mt-6 leading-7">
+        Ontdek stijlvolle horloges, bijzondere details en een tijdloos ontwerp.
+        Kies jouw favoriete model en bekijk de mogelijkheden.
+      </p>
+
+      <div class="flex gap-4 flex-wrap mt-8">
+        <a href="#collection" class="primary-button">Bekijk collectie</a>
+        <a href="#craftsmanship" class="secondary-button">Meer ontdekken</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION -->
+  <section id="collection" class="section">
+    <div class="text-center mb-12">
+      <p class="gold tracking-[.25em] text-sm">ONZE MODELLEN</p>
+      <h2 class="text-3xl md:text-4xl mt-3">De collectie</h2>
+      <p class="text-gray-400 mt-4">
+        Bekijk de modellen en kies jouw favoriete horloge.
+      </p>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-4 mb-8">
+        <input
+          id="searchInput"
+          class="form-field"
+          type="search"
+          placeholder="Zoek een horloge..."
+          oninput="renderWatches()"
+        >
+
+        <select id="categoryFilter" class="form-field md:max-w-xs" onchange="renderWatches()">
+          <option value="all">Alle modellen</option>
+          <option value="Classic">Classic</option>
+          <option value="Sport">Sport</option>
+          <option value="Elegant">Elegant</option>
+        </select>
+      </div>
+
+      <div id="watchGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+  </section>
+
+  <!-- CONFIGURATOR -->
+  <section id="configurator" class="section bg-[#151c17]">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <p class="gold tracking-[.25em] text-sm">JOUW STIJL</p>
+        <h2 class="text-3xl md:text-4xl mt-3">Configureer je horloge</h2>
+
+        <p class="text-gray-400 mt-5 leading-7">
+          Kies een model, kleur en band. Bekijk daarna jouw keuze en ga
+          verder naar het bestelformulier.
+        </p>
+
+        <div class="mt-7">
+          <label for="configModel">Model</label>
+          <select id="configModel" class="form-field" onchange="updateConfig()"></select>
+        </div>
+
+        <div class="mt-5">
+          <label for="configColor">Kleur</label>
+          <select id="configColor" class="form-field" onchange="updateConfig()">
+            <option value="Groen">Groen</option>
+            <option value="Zwart">Zwart</option>
+            <option value="Blauw">Blauw</option>
+            <option value="Goud">Goud</option>
+          </select>
+        </div>
+
+        <div class="mt-5">
+          <label for="configBand">Band</label>
+          <select id="configBand" class="form-field" onchange="updateConfig()">
+            <option value="Staal">Staal</option>
+            <option value="Leer">Leer</option>
+            <option value="Goudkleurig staal">Goudkleurig staal</option>
+          </select>
+        </div>
+
+        <div class="mt-6 border-t border-gray-700 pt-5">
+          <p class="text-gray-400 text-sm">Jouw configuratie</p>
+          <h3 id="configSummary" class="text-xl gold mt-2"></h3>
+          <p id="configPrice" class="text-2xl mt-3"></p>
+        </div>
+
+        <button class="primary-button mt-6" onclick="buyConfiguration()">
+          Verder naar bestellen <i class="fa-solid fa-arrow-right ml-2"></i>
+        </button>
+      </div>
+
+      <div class="bg-[#101512] border border-rolex-gold/30 p-8 text-center">
+        <img
+          src="https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=800&q=85"
+          alt="Voorbeeld van een luxe horloge"
+          class="w-full max-h-96 object-contain"
+        >
+        <p class="gold mt-5 tracking-widest">TIMELESS DESIGN</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRAFTSMANSHIP -->
+  <section id="craftsmanship" class="section">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="gold tracking-[.25em] text-sm">DETAILS MAKEN HET VERSCHIL</p>
+      <h2 class="text-3xl md:text-4xl mt-3">Vakmanschap en stijl</h2>
+
+      <p class="text-gray-400 leading-8 mt-6">
+        Een horloge is meer dan een manier om de tijd te lezen. Het kan
+        ook een persoonlijk accessoire zijn dat bij jouw smaak past.
+        Ontdek verschillende ontwerpen, kleuren en materialen.
+      </p>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-12 text-left">
+        <div class="border border-gray-700 p-6">
+          <i class="fa-solid fa-gem gold text-2xl"></i>
+          <h3 class="text-xl mt-4">Design</h3>
+          <p class="text-gray-400 mt-3 leading-7">
+            Stijlvolle ontwerpen met aandacht voor details.
+          </p>
+        </div>
+
+        <div class="border border-gray-700 p-6">
+          <i class="fa-solid fa-clock gold text-2xl"></i>
+          <h3 class="text-xl mt-4">Tijdloos</h3>
+          <p class="text-gray-400 mt-3 leading-7">
+            Een klassieke uitstraling voor verschillende gelegenheden.
+          </p>
+        </div>
+
+        <div class="border border-gray-700 p-6">
+          <i class="fa-solid fa-palette gold text-2xl"></i>
+          <h3 class="text-xl mt-4">Jouw stijl</h3>
+          <p class="text-gray-400 mt-3 leading-7">
+            Ontdek verschillende kleuren en combinaties.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-black border-t border-rolex-gold/30 px-6 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-6">
+      <div>
+        <h2 class="brand gold text-2xl">ROLEX</h2>
+        <p class="text-gray-500 text-sm mt-3">
+          Een onafhankelijk websiteproject.
+        </p>
+      </div>
+
+      <div class="flex gap-5 text-sm text-gray-400">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#collection" class="nav-link">Collectie</a>
+        <a href="#configurator" class="nav-link">Configureer</a>
+      </div>
+    </div>
+
+    <p class="text-center text-gray-600 text-xs mt-8">
+      © 2026 — Onafhankelijk websiteproject. Geen officiële Rolex-webshop.
+    </p>
+  </footer>
+
+  <!-- WATCH DETAILS MODAL -->
+  <div id="detailModal" class="modal" onclick="closeOnBackdrop(event, 'detailModal')">
+    <div class="modal-content">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl gold">Horloge details</h2>
+        <button onclick="closeModal('detailModal')" aria-label="Sluiten">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      <div id="detailContent" class="mt-5"></div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkoutModal" class="modal" onclick="closeOnBackdrop(event, 'checkoutModal')">
+    <div class="modal-content">
+      <div class="flex justify-between items-center gap-4">
+        <h2 class="text-2xl gold">Bestellen</h2>
+        <button onclick="closeModal('checkoutModal')" aria-label="Sluiten">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <p class="text-gray-400 text-sm mt-3">
+        Controleer je bestelling en vul je gegevens in.
+      </p>
+
+      <div class="bg-[#101512] border border-gray-700 p-4 mt-5">
+        <p class="text-gray-400 text-sm">Jouw keuze</p>
+        <h3 id="checkoutItem" class="text-xl mt-2"></h3>
+        <p id="checkoutPrice" class="gold text-xl mt-2"></p>
+      </div>
+
+      <form id="checkoutForm" onsubmit="goToPaymentPage(event)" class="mt-6">
+        <div class="mb-4">
+          <label for="customerName">Naam</label>
+          <input id="customerName" name="customerName" class="form-field" required placeholder="Je naam">
+        </div>
+
+        <div class="mb-4">
+          <label for="customerEmail">E-mailadres</label>
+          <input id="customerEmail" name="customerEmail" class="form-field" type="email" required placeholder="naam@voorbeeld.nl">
+        </div>
+
+        <div class="mb-4">
+          <label for="customerAddress">Adres</label>
+          <input id="customerAddress" name="customerAddress" class="form-field" required placeholder="Straat en huisnummer">
+        </div>
+
+        <div class="mb-4">
+          <label for="customerCity">Woonplaats</label>
+          <input id="customerCity" name="customerCity" class="form-field" required placeholder="Woonplaats">
+        </div>
+
+        <div class="mb-5">
+          <label for="customerNotes">Extra wensen (optioneel)</label>
+          <textarea id="customerNotes" name="customerNotes" class="form-field" rows="3" placeholder="Welke details moet ik weten?"></textarea>
+        </div>
+
+        <p class="text-gray-500 text-xs leading-5 mb-5">
+          Demo-bestelling: er wordt geen echte betaling uitgevoerd.
+        </p>
+
+        <button id="submitOrderButton" type="submit" class="primary-button w-full">
+          <i class="fa-solid fa-envelope mr-2"></i>
+          Bestelling versturen
+        </button>
+
+        <p id="orderMessage" class="text-sm mt-4" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /*
+      EMAILJS SETUP:
+      1. Create an account at https://www.emailjs.com/
+      2. Connect the email address that should receive orders.
+      3. Create an email service and an email template.
+      4. Replace all three placeholder values below.
+    */
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+
+    const watches = [
+      {
+        id: 1,
+        name: "Classic Green",
+        category: "Classic",
+        price: 8500,
+        description: "Een klassieke uitstraling met een groene wijzerplaat.",
+        image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 2,
+        name: "Sport Black",
+        category: "Sport",
+        price: 9200,
+        description: "Een sportief ontwerp met een donkere uitstraling.",
+        image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 3,
+        name: "Elegant Gold",
+        category: "Elegant",
+        price: 12500,
+        description: "Een elegante stijl met een goudkleurige afwerking.",
+        image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 4,
+        name: "Classic Silver",
+        category: "Classic",
+        price: 7800,
+        description: "Een minimalistisch ontwerp voor dagelijks gebruik.",
+        image: "https://images.unsplash.com/photo-1539874754764-5a96559165b0?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 5,
+        name: "Sport Blue",
+        category: "Sport",
+        price: 9800,
+        description: "Een opvallende blauwe stijl met een sportieve uitstraling.",
+        image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&w=800&q=85"
+      },
+      {
+        id: 6,
+        name: "Elegant Dark",
+        category: "Elegant",
+        price: 11000,
+        description: "Een stijlvolle donkere uitvoering.",
+        image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=800&q=85"
+      }
+    ];
+
+    let selectedWatch = watches[0];
+
+    let configState = {
+      model: watches[0].id,
+      color: "Groen",
+      band: "Staal"
+    };
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat("nl-NL", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0
+      }).format(price);
+    }
+
+    function renderWatches() {
+      const grid = document.getElementById("watchGrid");
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const category = document.getElementById("categoryFilter").value;
+
+      const filtered = watches.filter(watch => {
+        return watch.name.toLowerCase().includes(search) &&
+          (category === "all" || watch.category === category);
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<p class="text-gray-400">Geen horloges gevonden.</p>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(watch => `
+        <article class="watch-card">
+          <div class="watch-image">
+            <img src="${watch.image}" alt="${watch.name}" loading="lazy">
+          </div>
+          <div class="p-5">
+            <p class="gold text-xs tracking-widest">${watch.category}</p>
+            <h3 class="text-xl mt-2">${watch.name}</h3>
+            <p class="text-gray-400 text-sm mt-3 leading-6">${watch.description}</p>
+            <div class="flex justify-between items-center gap-3 mt-5">
+              <span class="gold font-semibold">${formatPrice(watch.price)}</span>
+              <button class="secondary-button text-sm" onclick="showDetails(${watch.id})">Bekijk</button>
+            </div>
+            <button class="primary-button w-full mt-4" onclick="startCheckout(${watch.id})">
+              Bestellen
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function setupConfigurator() {
+      document.getElementById("configModel").innerHTML = watches.map(watch => `
+        <option value="${watch.id}">${watch.name} — ${formatPrice(watch.price)}</option>
+      `).join("");
+
+      updateConfig();
+    }
+
+    function updateConfig() {
+      const modelSelect = document.getElementById("configModel");
+      const watch = watches.find(item => item.id === Number(modelSelect.value)) || watches[0];
+
+      configState = {
+        model: watch.id,
+        color: document.getElementById("configColor").value,
+        band: document.getElementById("configBand").value
+      };
+
+      document.getElementById("configSummary").textContent =
+        `${watch.name} • ${configState.color} • ${configState.band}`;
+
+      document.getElementById("configPrice").textContent = formatPrice(watch.price);
+    }
+
+    function buyConfiguration() {
+      updateConfig();
+
+      const watch = watches.find(item => item.id === configState.model);
+      selectedWatch = {
+        ...watch,
+        name: `${watch.name} (${configState.color}, ${configState.band})`
+      };
+
+      openCheckout();
+    }
+
+    function showDetails(id) {
+      const watch = watches.find(item => item.id === id);
+      if (!watch) return;
+
+      selectedWatch = watch;
+
+      document.getElementById("detailContent").innerHTML = `
+        <img src="${watch.image}" alt="${watch.name}" class="w-full max-h-64 object-contain">
+        <p class="gold text-sm mt-5">${watch.category}</p>
+        <h3 class="text-2xl mt-2">${watch.name}</h3>
+        <p class="text-gray-400 mt-3 leading-7">${watch.description}</p>
+        <p class="gold text-2xl mt-5">${formatPrice(watch.price)}</p>
+        <button class="primary-button w-full mt-6" onclick="startCheckout(${watch.id})">
+          Bestel dit model
+        </button>
+      `;
+
+      document.getElementById("detailModal").style.display = "flex";
+    }
+
+    function startCheckout(id) {
+      const watch = watches.find(item => item.id === id);
+      if (!watch) return;
+
+      selectedWatch = watch;
+      closeModal("detailModal");
+      openCheckout();
+    }
+
+    function openCheckout() {
+      document.getElementById("checkoutItem").textContent = selectedWatch.name;
+      document.getElementById("checkoutPrice").textContent = formatPrice(selectedWatch.price);
+      document.getElementById("orderMessage").textContent = "";
+      document.getElementById("checkoutModal").style.display = "flex";
+    }
+
+    async function goToPaymentPage(event) {
+      event.preventDefault();
+
+      const form = document.getElementById("checkoutForm");
+      if (!form.reportValidity()) return;
+
+      if (
+        EMAILJS_PUBLIC_KEY === "YOUR_PUBLIC_KEY" ||
+        EMAILJS_SERVICE_ID === "YOUR_SERVICE_ID" ||
+        EMAILJS_TEMPLATE_ID === "YOUR_TEMPLATE_ID"
+      ) {
+        document.getElementById("orderMessage").textContent =
+          "Vul eerst je EmailJS Public Key, Service ID en Template ID in de code in.";
+        document.getElementById("orderMessage").style.color = "#f0bd75";
+        return;
+      }
+
+      const button = document.getElementById("submitOrderButton");
+      const message = document.getElementById("orderMessage");
+
+      button.disabled = true;
+      button.textContent = "Bestelling versturen...";
+      message.textContent = "";
+
+      const order = {
+        customer_name: document.getElementById("customerName").value.trim(),
+        customer_email: document.getElementById("customerEmail").value.trim(),
+        customer_address: document.getElementById("customerAddress").value.trim(),
+        customer_city: document.getElementById("customerCity").value.trim(),
+        customer_notes: document.getElementById("customerNotes").value.trim() || "Geen extra wensen",
+        watch_name: selectedWatch.name,
+        watch_price: formatPrice(selectedWatch.price),
+        order_date: new Date().toLocaleString("nl-NL")
+      };
+
+      try {
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          order,
+          { publicKey: EMAILJS_PUBLIC_KEY }
+        );
+
+        // Continue to ai1.html after EmailJS confirms the email was sent.
+        window.location.href = "ai1.html";
+      } catch (error) {
+        console.error("EmailJS error:", error);
+
+        message.textContent =
+          "De e-mail kon niet worden verstuurd. Controleer je EmailJS-instellingen en probeer opnieuw.";
+        message.style.color = "#ff9c9c";
+
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-envelope mr-2"></i>Bestelling opnieuw versturen';
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    function closeOnBackdrop(event, id) {
+      if (event.target.id === id) {
+        closeModal(id);
+      }
+    }
+
+    function toggleMenu() {
+      document.getElementById("navigation").classList.toggle("mobile-open");
+    }
+
+    document.querySelectorAll("#navigation a").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("navigation").classList.remove("mobile-open");
+      });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderWatches();
+      setupConfigurator();
+
+      if (
+        EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY" &&
+        typeof emailjs !== "undefined"
+      ) {
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      }
+    });
+  </script>
+
+</body>
+</html>
